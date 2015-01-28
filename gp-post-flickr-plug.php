@@ -88,7 +88,7 @@ function gp_post_flickr_add_settings_page() {
 }
 
 function gp_post_flickr_settings_page() {
-    $gp_post_flick_plug_options = get_option("gp-post-flickr-plug-settings");
+    $gp_post_flickr_plug_options = get_option("gp-post-flickr-plug-settings");
 
     if(isset($_POST['info_update'])) {
         $gp_post_flickr_plug_api_key = $_POST['gp-post-flickr-plug-api_key'];
