@@ -163,7 +163,7 @@ add_action('admin_init', 'gp_post_flickr_register_mysettings');
 function gp_flickr_post_display_set($content)
 {
     if (is_single()) {
-        $settings_options = get_option('gp-post-flickr-settings');
+        $settings_options = get_option('gp-post-flickr-plug-settings');
     	$api_key = $settings_options['api_key'];
     	$user_id = $settings_options['user_id'];
     	
