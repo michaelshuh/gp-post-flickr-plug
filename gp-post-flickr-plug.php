@@ -155,34 +155,37 @@ add_action('admin_init', 'gp_post_flickr_register_mysettings');
 function gp_flickr_post_display_set($content)
 {
     if (is_single()) {
-        /*
         $settings_options = get_option('gp-post-flickr-settings');
     	$api_key = $settings_options['api_key'];
     	$user_id = $settings_options['user_id'];
+    	
+    	$post_id = get_the_ID();
+    	$photoset_id = get_post_meta($post_id, _gp_post_flickr_meta_photoset_key, true);
+    	
+    	if (isset($api_key) && isset($user_id) && isset($photoset_id)) {
+    	    require('phpflickr/phpFlickr.php');
+        	$phpFlickr = new phpFlickr($api_key);
 
-    	$meta_value = get_post_meta($post_id, _gp_post_flickr_meta_photoset_key, true);
+        	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
 
-    	require('phpflickr/phpFlickr.php');
-    	$phpFlickr = new phpFlickr($api_key);
+            $html = "<div id='gp-post-flickr-plug'>";
+            //$photos = $photos_array['photo'];
+            foreach ($photos as $photo) {
+                $photo_url = gp_post_flickr_flickr_photo_to_image_url($photo);
+                $link_url = gp_post_flickr_flickr_photo_to_link_url($photo, $user_id);
+                $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
+            }
+            $html .= "</div>";
+            */
+            $html = "<p>BLAH WOOHOO</p>";
 
-    	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
-
-        $html = "<div id='gp-post-flickr-plug'>";
-        //$photos = $photos_array['photo'];
-        foreach ($photos as $photo) {
-            $photo_url = gp_post_flickr_flickr_photo_to_image_url($photo);
-            $link_url = gp_post_flickr_flickr_photo_to_link_url($photo, $user_id);
-            $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
-        }
-        $html .= "</div>";
-        */
-        $html = "<p>BLAH WOOHOO</p>";
-
-        return $content . $html;
+            return $content . $html;
+    	} else {
+    	    return $content;
+    	}
     } else {
         return $content;
-    }
-    
+    }  
 }
  
 function gp_post_flickr_url_to_html($photo_url, $link_url) {
