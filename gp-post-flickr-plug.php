@@ -154,27 +154,35 @@ add_action('admin_init', 'gp_post_flickr_register_mysettings');
 
 function gp_flickr_post_display_set($content)
 {
-    $settings_options = get_option('gp-post-flickr-settings');
-	$api_key = $settings_options['api_key'];
-	$user_id = $settings_options['user_id'];
+    if (is_single()) {
+        /*
+        $settings_options = get_option('gp-post-flickr-settings');
+    	$api_key = $settings_options['api_key'];
+    	$user_id = $settings_options['user_id'];
 
-	$meta_value = get_post_meta($post_id, _gp_post_flickr_meta_photoset_key, true);
+    	$meta_value = get_post_meta($post_id, _gp_post_flickr_meta_photoset_key, true);
 
-	require('phpflickr/phpFlickr.php');
-	$phpFlickr = new phpFlickr($api_key);
+    	require('phpflickr/phpFlickr.php');
+    	$phpFlickr = new phpFlickr($api_key);
 
-	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
+    	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
 
-    $html = "<div id='gp-post-flickr-plug'>";
-    //$photos = $photos_array['photo'];
-    foreach ($photos as $photo) {
-        $photo_url = gp_post_flickr_flickr_photo_to_image_url($photo);
-        $link_url = gp_post_flickr_flickr_photo_to_link_url($photo, $user_id);
-        $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
+        $html = "<div id='gp-post-flickr-plug'>";
+        //$photos = $photos_array['photo'];
+        foreach ($photos as $photo) {
+            $photo_url = gp_post_flickr_flickr_photo_to_image_url($photo);
+            $link_url = gp_post_flickr_flickr_photo_to_link_url($photo, $user_id);
+            $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
+        }
+        $html .= "</div>";
+        */
+        $html = "<p>BLAH WOOHOO</p>";
+
+        return $content . $html;
+    } else {
+        return $content;
     }
-    $html .= "</div>";
-
-    return $content . $html;
+    
 }
  
 function gp_post_flickr_url_to_html($photo_url, $link_url) {
