@@ -1,5 +1,85 @@
 <?php
 
+/*
+Plugin Name: Gracepoint Post Flickr Plugin
+Plugin URI: https://github.com/sparkhee93/gp-post-flickr-plug
+Version: 1.0
+Author: Samuel Park
+Description: Adds a flickr set pictures to a post
+/* License
+    Gracepoint Post Flickr Plugin
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+function gp_post_flickr_meta_box_callback($post) {
+	    wp_nonce_field(basename(__FILE__), 'gp_post_flickr_meta_box_nonce'); 
+	    $value = get_post_meta( $post->ID, '_gp_post_flickr_meta_photoset_key', true );
+
+
+	    echo '<label for="photoset-id-post-class">';
+		_e("Add photoset ID from Flickr to get all the photos from that set", '12345678');
+		echo '</label>';
+		echo '<input type="text" id="gp_post_flickr_field_set_id" name="gp_post_flickr_field_set_id" value="' . esc_attr( $value ) . '" size="25" />';
+}
+
+function gp_post_flickr_add_meta_box() {
+	add_meta_box(
+		'gp_post_flickr_meta_box_id',
+		esc_html__('Flickr Set ID', '1234567'),
+		'gp_post_flickr_meta_box_callback',
+		'post',
+		'side',
+		'default'
+	);
+}
+
+function gp_post_flickr_save_post_class_meta($post_id) {
+    
+    // Check nonce is set
+	if(!isset($_POST['gp_post_flickr_meta_box_nonce']) {
+	    return;
+	}
+	
+	// Verify nonce is valid
+	if(!wp_verify_nonce($_POST['gp_post_flickr_meta_box_nonce'], basename(__FILE__))) {}
+		return;
+	}
+
+    // If this is an autosave, our form has not been submitted, so we don't want to do anything.
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+        return;
+    }
+
+	if(!current_user_can('edit_post', $post_id))
+		return;
+	}
+
+    // Make sure that it is set.
+    if ( ! isset( $_POST['gp_post_flickr_field_set_id'] ) ) {
+    	return;
+    }
+
+    // Sanitize user input.
+    $photoset_id = sanitize_text_field( $_POST['gp_post_flickr_field_set_id'] );
+
+    // Update the meta field in the database.
+    update_post_meta( $post_id, '_gp_post_flickr_meta_photoset_key', $photoset_id );
+}
+
+
+add_action('add_meta_boxes', 'gp_post_flickr_add_meta_box');
+add_action('save_post', 'gp_post_flickr_save_post_class_meta', 10, 2);
+
 function gp_post_flickr_plug() {
 	$settings_options = get_option('gp-post-flickr-settings');
 	$api_key = $settings_options['api_key'];
@@ -38,6 +118,6 @@ $updated_post = array(
 	'post_content'	=> $post_content . gp_post_flickr_plug()
 	);
 
-wp_update_post($updated_post);
+//wp_update_post($updated_post);
 
 ?>
