@@ -150,15 +150,15 @@ add_filter('plugin_action_links', 'gp_post_flickr_plug_settings_link', 10, 2);
 add_action('admin_menu', 'gp_post_flickr_add_settings_page');
 add_action('admin_init', 'gp_post_flickr_register_mysettings');
 
-/**************************** PLUGIN ****************************************/
+/**************************** Display ****************************************/
 
-function gp_post_flickr_plug() {
-	$settings_options = get_option('gp-post-flickr-settings');
+function gp_flickr_post_display_set($content)
+{
+    $settings_options = get_option('gp-post-flickr-settings');
 	$api_key = $settings_options['api_key'];
 	$user_id = $settings_options['user_id'];
 
-	$meta_key = 'photoset_id_post_class';
-	$meta_value = get_post_meta($post_id, $meta_key, true);
+	$meta_value = get_post_meta($post_id, _gp_post_flickr_meta_photoset_key, true);
 
 	require('phpflickr/phpFlickr.php');
 	$phpFlickr = new phpFlickr($api_key);
@@ -166,7 +166,7 @@ function gp_post_flickr_plug() {
 	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
 
     $html = "<div id='gp-post-flickr-plug'>";
-    // $photos = $photos_array['photo'];
+    //$photos = $photos_array['photo'];
     foreach ($photos as $photo) {
         $photo_url = flickr_photo_to_image_url($photo);
         $link_url = flickr_photo_to_link_url($photo, $user_id);
@@ -174,22 +174,26 @@ function gp_post_flickr_plug() {
     }
     $html .= "</div>";
 
-    return $html;
+    return $content . $html;
 }
-
+ 
 function url_to_html($photo_url, $link_url) {
 	$html = "<a href=$link_url target='_blank'>" . "<img src=$photo_url />" . "</a>";
 	return $html;
 }
-$post_id = get_the_ID();
-$post = get_post($post_id);
-$post_content = $post['post_content'];
 
-$updated_post = array(
-	'ID'			=> $post_id,
-	'post_content'	=> $post_content . gp_post_flickr_plug()
-	);
+function flickr_photo_to_image_url($photo) {
+	$size = "n";
+	$photo_url = "https://farm" . $photo['farm'] . ".staticflickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['secret'] . "_" . $size . ".jpg";
+	return $photo_url;
+}
+	
+function flickr_photo_to_link_url($photo, $user_id) {
+	$link_url = "https://www.flickr.com/photos/" . $user_id . "/" . $photo['id'];
+	return $link_url;
+}
 
-//wp_update_post($updated_post);
+
+add_action('the_content', 'gp_flickr_post_display_set');
 
 ?>
