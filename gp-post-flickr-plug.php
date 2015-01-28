@@ -168,27 +168,27 @@ function gp_flickr_post_display_set($content)
     $html = "<div id='gp-post-flickr-plug'>";
     //$photos = $photos_array['photo'];
     foreach ($photos as $photo) {
-        $photo_url = flickr_photo_to_image_url($photo);
-        $link_url = flickr_photo_to_link_url($photo, $user_id);
-        $html .= url_to_html($photo_url, $link_url);
+        $photo_url = gp_post_flickr_flickr_photo_to_image_url($photo);
+        $link_url = gp_post_flickr_flickr_photo_to_link_url($photo, $user_id);
+        $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
     }
     $html .= "</div>";
 
     return $content . $html;
 }
  
-function url_to_html($photo_url, $link_url) {
+function gp_post_flickr_url_to_html($photo_url, $link_url) {
 	$html = "<a href=$link_url target='_blank'>" . "<img src=$photo_url />" . "</a>";
 	return $html;
 }
 
-function flickr_photo_to_image_url($photo) {
+function gp_post_flickr_flickr_photo_to_image_url($photo) {
 	$size = "n";
 	$photo_url = "https://farm" . $photo['farm'] . ".staticflickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['secret'] . "_" . $size . ".jpg";
 	return $photo_url;
 }
 	
-function flickr_photo_to_link_url($photo, $user_id) {
+function gp_post_flickr_flickr_photo_to_link_url($photo, $user_id) {
 	$link_url = "https://www.flickr.com/photos/" . $user_id . "/" . $photo['id'];
 	return $link_url;
 }
