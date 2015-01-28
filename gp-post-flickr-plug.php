@@ -106,7 +106,7 @@ function gp_post_flickr_settings_page() {
 
     <div class="wrap">
         <h2>GP Post Flickr Plugin</h2>
-            <form method="post" action="options-general.php?page=gp-post-flickr-plug.php" id="gp-post-flickr-plug-settings">
+            <form method="post" action="options-general.php?page=gp-post-flickr-plug/gp-post-flickr-plug.php" id="gp-post-flickr-plug-settings">
             <h3>Gracepoint Flickr Settings</h3>
             <table class="form-table">
                 <tr valign="top">
@@ -146,7 +146,7 @@ function gp_post_flickr_plug_settings_link($links, $file) {
     // check to make sure we are on the correct plugin
     if ($file == $this_plugin) {
         // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-        $settings_link = '<a href="options-general.php?page=gp-post-flickr-plug.php">Settings</a>';
+        $settings_link = '<a href="options-general.php?page=gp-post-flickr-plug/gp-post-flickr-plug.php">Settings</a>';
         // add the link to the list
         array_unshift($links, $settings_link);
     }
