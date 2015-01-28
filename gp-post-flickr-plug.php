@@ -160,7 +160,7 @@ function gp_post_flickr_plug() {
 	$meta_key = 'photoset_id_post_class';
 	$meta_value = get_post_meta($post_id, $meta_key, true);
 
-	require('phpflickr-master/phpFlickr.php');
+	require('phpflickr/phpFlickr.php');
 	$phpFlickr = new phpFlickr($api_key);
 
 	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
