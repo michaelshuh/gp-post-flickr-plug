@@ -93,9 +93,11 @@ function gp_post_flickr_settings_page() {
     if(isset($_POST['info_update'])) {
         $gp_post_flickr_plug_api_key = $_POST['gp-post-flickr-plug-api_key'];
         $gp_post_flickr_plug_user_id = $_POST['gp-post-flickr-plug-user_id'];
+        $gp_post_flickr_plug_secret = $_POST['gp-post-flickr-plug-secret'];
 
         $gp_post_flickr_plug_options['api_key'] = $gp_post_flickr_plug_api_key;
         $gp_post_flickr_plug_options['user_id'] = $gp_post_flickr_plug_user_id;
+        $gp_post_flickr_plug_options['secret'] = $gp_post_flickr_plug_secret;
 
         update_option( 'gp-post-flickr-plug-settings', $gp_post_flickr_plug_options );
     }
@@ -104,12 +106,16 @@ function gp_post_flickr_settings_page() {
 
     <div class="wrap">
         <h2>GP Post Flickr Plugin</h2>
-            <form method="post" action="options-general.php?page=gp-post-flickr-plug/gp-post-flickr-settings.php" id="gp-post-flickr-plug-settings">
+            <form method="post" action="options-general.php?page=gp-post-flickr-plug/gp-post-flickr-plug.php" id="gp-post-flickr-plug-settings">
             <h3>Gracepoint Flickr Settings</h3>
             <table class="form-table">
                 <tr valign="top">
                     <th scope="row">Flickr API Key</th>
                     <td><input type="text" name="gp-post-flickr-plug-api_key" value="<?php echo $gp_post_flickr_plug_options['api_key'];?>"></td>
+                </tr>
+                <tr valign="top">
+                    <th scope="row">Flickr Secret</th>
+                    <td><input type="text" name="gp-post-flickr-plug-secret" value="<?php echo $gp_post_flickr_plug_options['secret'];?>"></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row">Flickr User ID</th>
@@ -126,6 +132,8 @@ function gp_post_flickr_settings_page() {
 
 function gp_post_flickr_register_mysettings() {
     register_setting( 'gp-post-flickr-plug-settings-group', 'gp-post-flickr-plug-api_key' );
+    register_setting( 'gp-post-flickr-plug-settings-group', 'gp-post-flickr-plug-user_id' );
+    register_setting( 'gp-post-flickr-plug-settings-group', 'gp-post-flickr-plug-secret' );
 }
 
 function gp_post_flickr_plug_settings_link($links, $file) {
@@ -138,7 +146,7 @@ function gp_post_flickr_plug_settings_link($links, $file) {
     // check to make sure we are on the correct plugin
     if ($file == $this_plugin) {
         // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-        $settings_link = '<a href="options-general.php?page=gp-post-flickr-plug/gp-post-flickr-settings.php">Settings</a>';
+        $settings_link = '<a href="options-general.php?page=gp-post-flickr-plug/gp-post-flickr-plug.php">Settings</a>';
         // add the link to the list
         array_unshift($links, $settings_link);
     }
