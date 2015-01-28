@@ -176,7 +176,6 @@ function gp_flickr_post_display_set($content)
                 $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
             }
             $html .= "</div>";
-            */
             $html = "<p>BLAH WOOHOO</p>";
 
             return $content . $html;
