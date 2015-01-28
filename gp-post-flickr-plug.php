@@ -174,17 +174,17 @@ function gp_flickr_post_display_set($content)
     	    require('phpflickr/phpFlickr.php');
         	$phpFlickr = new phpFlickr($api_key);
 
-        	$photos = $phpFlickr->photosets_getPhotos($api_key, $meta_value);
+        	$photoset_array = $phpFlickr->photosets_getPhotos($photoset_id);
+            $photoset = $photoset_array['photoset'];
+            $photos = $photoset['photo'];
 
             $html = "<div id='gp-post-flickr-plug'>";
-            //$photos = $photos_array['photo'];
             foreach ($photos as $photo) {
                 $photo_url = gp_post_flickr_flickr_photo_to_image_url($photo);
                 $link_url = gp_post_flickr_flickr_photo_to_link_url($photo, $user_id);
                 $html .= gp_post_flickr_url_to_html($photo_url, $link_url);
             }
             $html .= "</div>";
-            $html = "<p>BLAH WOOHOO</p>";
 
             return $content . $html;
     	} else {
@@ -201,7 +201,7 @@ function gp_post_flickr_url_to_html($photo_url, $link_url) {
 }
 
 function gp_post_flickr_flickr_photo_to_image_url($photo) {
-	$size = "n";
+	$size = "m";
 	$photo_url = "https://farm" . $photo['farm'] . ".staticflickr.com/" . $photo['server'] . "/" . $photo['id'] . "_" . $photo['secret'] . "_" . $size . ".jpg";
 	return $photo_url;
 }
