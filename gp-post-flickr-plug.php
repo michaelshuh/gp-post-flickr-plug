@@ -46,17 +46,17 @@ function gp_post_flickr_add_meta_box() {
 function gp_post_flickr_save_post_class_meta($post_id) {
     
     // Check nonce is set
-	if(!isset($_POST['gp_post_flickr_meta_box_nonce']) {
+	if(!isset($_POST['gp_post_flickr_meta_box_nonce'])) {
 	    return;
 	}
 	
 	// Verify nonce is valid
-	if(!wp_verify_nonce($_POST['gp_post_flickr_meta_box_nonce'], basename(__FILE__))) {}
+	if(!wp_verify_nonce($_POST['gp_post_flickr_meta_box_nonce'], basename(__FILE__))) {
 		return;
 	}
 
     // If this is an autosave, our form has not been submitted, so we don't want to do anything.
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    if (defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE) {
         return;
     }
 
@@ -65,15 +65,15 @@ function gp_post_flickr_save_post_class_meta($post_id) {
 	}
 
     // Make sure that it is set.
-    if ( ! isset( $_POST['gp_post_flickr_field_set_id'] ) ) {
+    if (!isset( $_POST['gp_post_flickr_field_set_id'])) {
     	return;
     }
 
     // Sanitize user input.
-    $photoset_id = sanitize_text_field( $_POST['gp_post_flickr_field_set_id'] );
+    $photoset_id = sanitize_text_field($_POST['gp_post_flickr_field_set_id']);
 
     // Update the meta field in the database.
-    update_post_meta( $post_id, '_gp_post_flickr_meta_photoset_key', $photoset_id );
+    update_post_meta($post_id, '_gp_post_flickr_meta_photoset_key', $photoset_id);
 }
 
 
